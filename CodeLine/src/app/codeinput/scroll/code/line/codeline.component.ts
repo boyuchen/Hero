@@ -5,7 +5,7 @@ import { Component, OnInit } from '@angular/core';
     templateUrl: './codeline.component.html',
     styleUrls: ['./codeline.component.css']
 })
-export class NameComponent implements OnInit {
+export class CodeLineComponent implements OnInit {
     constructor() { }
 
     line:number = 0;
