@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,Input } from '@angular/core';
+import { TempModel } from './tempCode';
 
 @Component({
     selector: 'codeline',
@@ -8,7 +9,10 @@ import { Component, OnInit } from '@angular/core';
 export class CodeLineComponent implements OnInit {
     constructor() { }
 
-    line:number = 0;
+    line:number = 0; // 行号
+
+    @Input() codeString:string; // 代码
+    cursorsIndex:number = 0; // 光标位置
 
     ngOnInit() { }
 }
