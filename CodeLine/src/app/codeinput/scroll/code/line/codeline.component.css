@@ -1,0 +1,22 @@
+.CodeMirror-gutter-wrapper{position:absolute;z-index:4;height:100%}
+.CodeMirror-gutter-wrapper{-webkit-user-select:none;-moz-user-select:none;user-select:none}
+.CodeMirror-linenumber{padding:0 3px 0 5px;min-width:20px;text-align:right;color:#999;-moz-box-sizing:content-box;box-sizing:content-box}
+pre{
+    -moz-border-radius:0;
+    -webkit-border-radius:0;
+    border-radius:0;
+    border-width:0;
+    background:transparent;
+    font-family: Droid Sans Mono,monospace;
+    font-size:14px;
+    margin:0;white-space:pre;
+    word-wrap:normal;
+    line-height:inherit;
+    color:inherit;
+    z-index:2;
+    position:relative;
+    overflow:visible;
+    -webkit-tap-highlight-color:transparent
+}
+::selection{background:#d7d4f0}
+::-moz-selection{background:#d7d4f0}

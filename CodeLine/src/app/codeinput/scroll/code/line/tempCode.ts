@@ -50,9 +50,14 @@ export class TempModel {
  * code模式，单击出发事件模型
  */
 export class ClickModel {
-    public x:number = 0; // 模型X坐标位置
-    public y:number = 0; // 模型Y坐标位置
-    public codeWidth:number = 0; // 模型的宽度
     public codeHeight:number = 0; // 模型的高度
     public line:number = 0; // 模型在第几行
+    public customLeft:number = 0; // 光标距离左边的距离
+}
+
+/**
+ * 字符宽度模型
+ */
+export class CharModel {
+    public chars = {a:0,b:0,c:0,d:0,e:0};
 }
