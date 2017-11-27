@@ -3,7 +3,7 @@
     <!--输入文本-->
     <div class="CodeMirror editormd">
         <!--输入控件-->
-        <inTextarea></inTextarea>
+        <inTextarea [ngStyle]="{'left': left, 'top': top, 'height': height,'display': 'block','width': '1000px','height': '1em','position':'absolute'}"></inTextarea>
         <!--滚动条-->
         <div class="CodeMirror-scroll">
             <div class="CodeMirror-sizer" style="margin-left: 39px; margin-bottom: -7px; border-right-width: 23px; min-height: 1042px; padding-right: 7px; padding-bottom: 0px;">

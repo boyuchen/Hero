@@ -16,7 +16,8 @@ pre{
     z-index:2;
     position:relative;
     overflow:visible;
-    -webkit-tap-highlight-color:transparent
+    -webkit-tap-highlight-color:transparent;
+    outline: none;
 }
 ::selection{background:#d7d4f0}
 ::-moz-selection{background:#d7d4f0}

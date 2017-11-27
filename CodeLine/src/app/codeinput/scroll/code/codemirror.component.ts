@@ -9,7 +9,7 @@ import { CodeLineComponent } from './line/codeline.component';
 })
 export class CodeMirrorComponent implements OnInit {
     public isHidden:boolean = true; // 是否隐藏光标
-    public left:string = '0px';
+    public left:string = '0px'; // 光标坐标
     public top:string = '0px';
     public height:string = '12px';
     public cursor_ms; // 光标计时器
@@ -21,6 +21,9 @@ export class CodeMirrorComponent implements OnInit {
 
     ngOnInit() { }
 
+    /** 移动光标触发事件
+     * data：子组件发送来的数据
+     */
     EditCodeMirror(data: ClickModel): void {
         this.isHidden = false; // 显示光标
         // 光标显示计时 

@@ -13,7 +13,7 @@ export class CodeLineComponent implements OnInit {
     private _multiple: number = 7;// 一个字符的像素，中文12像素
     private _codeArray = []; // 字符分割位置数组
     private cursorsLeftWidth: number = 0; // 光标距离左边的距离
-    public point = { x: 0, y: 0 }; // 组件位置
+    private cursorindex:number = 0; // 光标位置
     @Input() line: number = 0; // 行号
 
     @ViewChild('pretemp') pretempDom: ElementRef; // 本地DOM元素
@@ -39,10 +39,17 @@ export class CodeLineComponent implements OnInit {
     ngOnInit() { }
 
     OnEditClick(event: any): void {
+        this.SendEditClick(event.target.clientHeight,event.offsetX);
+    }
+
+    /**触发父组件绑定事件
+     * height：pre高度，cursorsWidth：光标位置
+     */
+    private SendEditClick(height:number,cursorsWidth: number):void{
         let data = new ClickModel();
         data.line = this.line;
-        data.codeHeight = this.codeHeight = event.target.clientHeight; // pre元素高度和宽度
-        this.SetCursors(event.offsetX); // 设置光标位置
+        data.codeHeight = this.codeHeight = height; // pre元素高度和宽度
+        this.SetCursors(cursorsWidth); // 设置光标位置
         data.customLeft = this.cursorsLeftWidth;
         this.CodeLineClick.emit(data);
     }
@@ -83,10 +90,13 @@ export class CodeLineComponent implements OnInit {
                 // 判断光标在字符左半边还是右半边
                 if (startcharLeft + endcharLeft / 2 >= cursorsWidth) {
                     this.cursorsLeftWidth = startcharLeft; // 光标在字符左半边 + 字符差值
+                    this.cursorindex = index; // 光标位置
                 }
                 else {
                     this.cursorsLeftWidth = startcharLeft + endcharLeft; // 光标在字符右半边
+                    this.cursorindex = index + 1; // 光标位置
                 }
+                
                 return;
             }
             else if (index >= this._codeArray.length) {
@@ -95,10 +105,23 @@ export class CodeLineComponent implements OnInit {
         }
     }
 
-    /**
+    /** 
      * 获取光标位置
      */
     GetCursors(): number {
         return this.cursorsLeftWidth;
+    }
+
+    /** 
+     * 键盘按下事件
+     */
+    OnKeyPress(event:any):void {
+        let key=event.key;
+        let index = this.cursorindex;
+        let strstart = this._codeString.substring(0,index);
+        let strend = this._codeString.substring(index);
+        this.codeString = strstart + key + strend; // 1.初始化字符串属性
+        let cursorsWidth = this.GetCursors() + this._codeArray[index] * this._multiple // 2.获取光标位置
+        this.SendEditClick(this.codeHeight,cursorsWidth); // 3.操作父组件移动光标
     }
 }
