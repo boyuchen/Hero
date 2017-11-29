@@ -117,10 +117,18 @@ export class CodeLineComponent implements OnInit {
      */
     OnKeyPress(event:any):void {
         let key=event.key;
+        this.OnKeyDown(key); // OnKeyDown事件处理函数
+    }
+
+    /**
+     * OnKeyDown事件处理
+     * str：输入字符
+     */
+    OnKeyDown(str:string):void{
         let index = this.cursorindex;
         let strstart = this._codeString.substring(0,index);
         let strend = this._codeString.substring(index);
-        this.codeString = strstart + key + strend; // 1.初始化字符串属性
+        this.codeString = strstart + str + strend; // 1.初始化字符串属性
         let cursorsWidth = this.GetCursors() + this._codeArray[index] * this._multiple // 2.获取光标位置
         this.SendEditClick(this.codeHeight,cursorsWidth); // 3.操作父组件移动光标
     }

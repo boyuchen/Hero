@@ -1,4 +1,4 @@
 <div style="overflow: hidden;">
-    <textarea (keydown)="OnKeyPress($event)" autocorrect="off" autocapitalize="off" spellcheck="false" style="position: absolute; padding: 0px; width: 1000px; height: 1em; outline: none;border: none;"
+    <textarea id="txtedit" [formControl]="term" autocorrect="off" autocapitalize="off" spellcheck="false" style="position: absolute; padding: 0px; width: 1000px; height: 1em; outline: none;border: none;"
         tabindex="0"></textarea>
 </div>

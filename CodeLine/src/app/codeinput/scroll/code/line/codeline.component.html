@@ -4,5 +4,5 @@
         <div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">{{line}}</div>
     </div>
     <!--内容-->
-    <pre class="" tabindex="0" (keydown)="OnKeyPress($event)" (click)="OnEditClick($event)" #pretemp >{{codeString}}</pre>
+    <pre class="" (keydown)="OnKeyPress($event)" tabindex="0" (click)="OnEditClick($event)" #pretemp >{{codeString}}</pre>
 </div>
