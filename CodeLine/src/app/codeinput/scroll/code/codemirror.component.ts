@@ -22,7 +22,9 @@ export class CodeMirrorComponent implements OnInit {
     constructor(private service: KeyService) { }
 
     ngOnInit() {
+        // 订阅键盘服务
         this.service.getcodechar().subscribe(item => {
+            this.codelineComponent.OnKeyDown(item);
             console.log('CodeMirrorComponent value:' + item);
         });
     }

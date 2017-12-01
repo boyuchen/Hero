@@ -3,24 +3,13 @@ import { Subject } from 'rxjs/Rx';
 
 @Injectable()
 export class KeyService {
-    private _valueChanges: string = "";
-
-    public setValue(str: string): void {
-        this._valueChanges = str;
-    }
+    private subject:Subject<string> = new Subject<string>();
 
     /**
      * getcodechar 获取一个Observable订阅对象
      */
     public getcodechar(): Subject<string> {
-
-        let subject = new Subject<string>();
-        if(this._valueChanges != ""){
-            subject.next(this._valueChanges);
-        }
-        this._valueChanges = "";
-        return subject;
-        
+        return this.subject;
     }
 
 }

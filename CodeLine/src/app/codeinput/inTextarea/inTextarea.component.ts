@@ -15,11 +15,12 @@ export class InTextareaComponent implements OnInit {
     constructor(private service:KeyService) { }
 
     ngOnInit() {
+        // 订阅键盘事件
         this.term.valueChanges
         .debounceTime(500)
         .distinctUntilChanged()
         .subscribe(items => {
-            this.service.setValue(items);
+            this.service.getcodechar().next(items);
             this.term.setValue("");
             console.log('subscribe:' + items);
         });
