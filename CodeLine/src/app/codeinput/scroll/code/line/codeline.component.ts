@@ -130,12 +130,11 @@ export class CodeLineComponent implements OnInit {
         let strend = this._codeString.substring(index);
         
         this.codeString = strstart + str + strend; // 1.初始化字符串属性
-        let sum = this._codeArray[index]; // 要移动数组集合
+        let sum = 0; // 要移动数组集合
         for (var i = 0; i < str.length; i++) {
-            sum += this._codeArray[index + 1 ];
-            index = index + 1;
+            sum += this._codeArray[index + i];
         }
-        let cursorsWidth = this.GetCursors() + this._codeArray[sum] * this._multiple // 2.获取光标位置
+        let cursorsWidth = this.GetCursors() + sum * this._multiple // 2.获取光标位置
         this.SendEditClick(this.codeHeight, cursorsWidth); // 3.操作父组件移动光标
     }
 }
