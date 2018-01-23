@@ -14,6 +14,7 @@ export class CodeLineComponent implements OnInit {
     private _codeArray = []; // 字符分割位置数组
     private cursorsLeftWidth: number = 0; // 光标距离左边的距离
     private cursorindex: number = 0; // 光标位置
+    private selection: string = ''; // 选中文字
     @Input() line: number = 0; // 行号
 
     @ViewChild('pretemp') pretempDom: ElementRef; // 本地DOM元素
@@ -39,6 +40,7 @@ export class CodeLineComponent implements OnInit {
     ngOnInit() { }
 
     OnEditClick(event: any): void {
+        this.selection = window.getSelection().toString();  // 选中项
         this.SendEditClick(event.target.clientHeight, event.offsetX);
     }
 
@@ -51,6 +53,7 @@ export class CodeLineComponent implements OnInit {
         data.codeHeight = this.codeHeight = height; // pre元素高度和宽度
         this.SetCursors(cursorsWidth); // 设置光标位置
         data.customLeft = this.cursorsLeftWidth;
+        data.isCustomHidden = this.selection == "" ? false : true; // 选中文字不需要输入光标
         this.CodeLineClick.emit(data);
     }
 
@@ -112,29 +115,45 @@ export class CodeLineComponent implements OnInit {
         return this.cursorsLeftWidth;
     }
 
-    /** 
+    /**
      * 键盘按下事件
      */
     OnKeyPress(event: any): void {
         let key = event.key;
-        this.OnKeyDown(key); // OnKeyDown事件处理函数
+        if (key == "Backspace") {
+            this.OnKeyDown(this.selection, "del");
+        }
     }
 
     /**
      * OnKeyDown事件处理
-     * str：输入字符
+     * str：输入或者删除字符
+     * mode: in/del 插入或者删除模式
      */
-    OnKeyDown(str: string): void {
-        let index = this.cursorindex;
-        let strstart = this._codeString.substring(0, index);
-        let strend = this._codeString.substring(index);
-        
-        this.codeString = strstart + str + strend; // 1.初始化字符串属性
+    OnKeyDown(str: string, mode: string): void {
+        let index, strstart, strend, operator;
+
+        if (mode == "in") {
+            index = this.cursorindex;
+            strstart = this._codeString.substring(0, index);
+            strend = this._codeString.substring(index);
+            this.codeString = strstart + str + strend; // 1.初始化字符串属性    
+            operator = 1; // 插入光标向前
+        }
+        else if (mode == "del") {
+            str = str == "" ? this.codeString[this.cursorindex - 1] : str;
+            index = this.codeString.indexOf(str);
+            strstart = this._codeString.substring(0, index);
+            strend = this._codeString.substring(index + str.length);
+            this.codeString = strstart + strend; // 1.初始化字符串属性    
+            operator = -1; // 删除光标向后
+        }
+
         let sum = 0; // 要移动数组集合
         for (var i = 0; i < str.length; i++) {
             sum += this._codeArray[index + i];
         }
-        let cursorsWidth = this.GetCursors() + sum * this._multiple // 2.获取光标位置
+        let cursorsWidth = this.GetCursors() + operator * sum * this._multiple // 2.获取光标位置
         this.SendEditClick(this.codeHeight, cursorsWidth); // 3.操作父组件移动光标
     }
 }

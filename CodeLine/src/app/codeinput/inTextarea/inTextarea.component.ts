@@ -25,4 +25,13 @@ export class InTextareaComponent implements OnInit {
             console.log('subscribe:' + items);
         });
      }
+
+     /** 
+     * 键盘按下事件
+     */
+    OnKeyPress(event: any): void {
+        let key = event.key;
+        if(key != 'Backspace') return;
+        this.service.getcodechar().next(key);
+    }
 }

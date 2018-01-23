@@ -53,6 +53,7 @@ export class ClickModel {
     public codeHeight:number = 0; // 模型的高度
     public line:number = 0; // 模型在第几行
     public customLeft:number = 0; // 光标距离左边的距离
+    public isCustomHidden:boolean = false; // 是否显示光标
 }
 
 /**
