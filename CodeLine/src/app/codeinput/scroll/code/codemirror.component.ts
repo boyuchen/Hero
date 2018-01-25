@@ -1,4 +1,6 @@
-import { Component, OnInit, ViewChildren, QueryList, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewChildren, QueryList, AfterViewInit,
+     ViewContainerRef, ComponentFactoryResolver,ComponentFactory,ComponentRef 
+} from '@angular/core';
 import { ClickModel } from './line/tempCode';
 import { CodeLineComponent } from './line/codeline.component';
 import { KeyService } from '../../KeyService';
@@ -15,24 +17,33 @@ export class CodeMirrorComponent implements OnInit {
     public height: string = '12px';
     public cursor_line: number = 0; // 光标在具体在哪一行
     public cursor_ms; // 光标计时器
+    private componentRef: ComponentRef<CodeLineComponent>; // 新建子组件对象
 
     @ViewChildren(CodeLineComponent)
     private codelineComponentList: QueryList<CodeLineComponent>; // 子组件对象集合
 
-    constructor(private service: KeyService) { }
+    @ViewChild("CodeMirrorContainer", { read: ViewContainerRef }) container: ViewContainerRef; // 存放子组件容器对象
 
-    ngOnInit() {}
+    //  resolver 为动态组件服务
+    constructor(private service: KeyService, private resolver: ComponentFactoryResolver) { }
+
+    ngOnInit() { }
 
     ngAfterViewInit() {
+        this.codelineComponentList.changes.subscribe(e => console.log("QueryList length:" + this.codelineComponentList.length));
         // 订阅键盘服务
         this.service.getcodechar().subscribe(item => {
             // 查找到集合中的使用中的子组件
+            
             let codelineComponent = this.codelineComponentList.find(model => model.line == this.service.line);
             switch (item) {
                 case 'Backspace':
                     codelineComponent.OnKeyDown("", "del");
                     break;
-
+                case '\n':
+                    // 回车插入指定位置组件
+                    this.InsertComponent(7,"dfsdfs");
+                    break;
                 default:
                     codelineComponent.OnKeyDown(item, "in");
                     break;
@@ -59,5 +70,19 @@ export class CodeMirrorComponent implements OnInit {
             this.top = (data.line - 1) * data.codeHeight + 'px';
             this.height = data.codeHeight + 'px';
         }
+    }
+
+    /**
+     * 插入新的子组件
+     * line：行号
+     * str：内容
+     */
+    InsertComponent(line:number, str:string): void {
+        const factory: ComponentFactory<CodeLineComponent> =
+            this.resolver.resolveComponentFactory(CodeLineComponent);
+        this.componentRef = this.container.createComponent(factory);
+        this.componentRef.instance.line = line;
+        this.componentRef.instance.codeString = str;
+        this.componentRef.instance.CodeLineClick.subscribe(data => this.EditCodeMirror(data)); // 订阅事件调用
     }
 }

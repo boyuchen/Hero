@@ -10,6 +10,7 @@ import { KeyService } from './KeyService';
 
 @NgModule({
     declarations: [CodeInputComponent, CodeMirrorComponent, CodeLineComponent, InTextareaComponent],
+    entryComponents:[CodeLineComponent],
     imports: [CommonModule,FormsModule,ReactiveFormsModule],
     exports: [CodeInputComponent],
     providers: [KeyService],
