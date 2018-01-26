@@ -6,6 +6,7 @@
                 <div class="CodeMirror-cursor" [ngStyle]="{'left': left, 'top': top, 'height': height}">&nbsp;</div>
             </div>
             <!--代码-->
+<<<<<<< HEAD
             <div class="CodeMirror-code">
                 <codeline (CodeLineClick)="EditCodeMirror($event)" [line]="1" [codeString]="'abccdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ一个两个'"></codeline>
 
@@ -22,6 +23,15 @@
                     <codeline (CodeLineClick)="EditCodeMirror($event)" [line]="6" [codeString]="'abccdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ一个两个'"></codeline>
                     <!--字符串输入-->
                 </ng-template>
+=======
+            <div class="CodeMirror-code" #CodeMirrorContainer>
+                <codeline (CodeLineClick)="EditCodeMirror($event)" [line]="1" [codeString]="'abccdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ一个两个'"></codeline> <!--字符串输入-->     
+                <codeline (CodeLineClick)="EditCodeMirror($event)" [line]="2" [codeString]="'abccdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ一个两个'"></codeline> <!--字符串输入-->    
+                <codeline (CodeLineClick)="EditCodeMirror($event)" [line]="3" [codeString]="'abccdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ一个两个'"></codeline> <!--字符串输入--> 
+                <codeline (CodeLineClick)="EditCodeMirror($event)" [line]="4" [codeString]="'abccdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ一个两个'"></codeline> <!--字符串输入--> 
+                <codeline (CodeLineClick)="EditCodeMirror($event)" [line]="5" [codeString]="'abccdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ一个两个'"></codeline> <!--字符串输入--> 
+                <codeline (CodeLineClick)="EditCodeMirror($event)" [line]="6" [codeString]="'abccdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ一个两个'"></codeline> <!--字符串输入-->                         
+>>>>>>> dcc02a48bb21cba422da1eb0ce0e560e84fffc0d
             </div>
         </div>
     </div>
