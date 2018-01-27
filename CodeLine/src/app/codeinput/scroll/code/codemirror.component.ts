@@ -30,11 +30,9 @@ export class CodeMirrorComponent implements OnInit {
     ngOnInit() { }
 
     ngAfterViewInit() {
-        this.codelineComponentList.changes.subscribe(e => console.log("QueryList length:" + this.codelineComponentList.length));
         // 订阅键盘服务
         this.service.getcodechar().subscribe(item => {
             // 查找到集合中的使用中的子组件
-            
             let codelineComponent = this.codelineComponentList.find(model => model.line == this.service.line);
             switch (item) {
                 case 'Backspace':
