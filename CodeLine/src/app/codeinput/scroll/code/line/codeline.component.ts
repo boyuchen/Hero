@@ -30,8 +30,6 @@ export class CodeLineComponent implements OnInit {
     } // 代码
     get codeString() { return this._codeString; }
 
-    private arrIndex: number[]; // 判断字符位置的索引数组
-    public cursorsIndex: number = 0; // 光标位置
     public codeWidth: number = 0; // 组件宽度
     public codeHeight: number = 0; // 组件高度
 
