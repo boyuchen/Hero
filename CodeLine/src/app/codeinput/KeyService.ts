@@ -13,4 +13,19 @@ export class KeyService {
         return this.subject;
     }
 
+    /**
+     * 过滤关键字推送数据
+     */
+    public sendcodechar(keyCode:any):void{
+        // 键盘过滤
+        if (keyCode >= 48 && keyCode <= 57)
+        {
+
+        }
+        else{
+
+        }
+        return this.subject.next(keyCode);
+    }
+
 }

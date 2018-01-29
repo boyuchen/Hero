@@ -7,10 +7,10 @@
             </div>
             <!--代码-->
             <div class="CodeMirror-code">
-                <codeline (CodeLineClick)="EditCodeMirror($event)" [line]="1" [codeString]="'abccdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ一个两个'"></codeline>
-                <ng-template #CodeMirrorContainer>
-                    <codeline (CodeLineClick)="EditCodeMirror($event)" [line]="1" [codeString]="'abccdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ一个两个'"></codeline>
-                </ng-template>
+                <ng-template #CodeMirrorContainer></ng-template>
+                <button (click)="InsertComponent(1,'11111111')">测试1</button>
+                <button (click)="InsertComponent(2,'22222222')">测试2</button>
+                <!--<codeline (CodeLineClick)="EditCodeMirror($event)" [line]="1" [codeString]="'abccdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ一个两个'"></codeline>-->
             </div>
         </div>
     </div>

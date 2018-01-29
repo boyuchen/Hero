@@ -31,7 +31,7 @@ export class InTextareaComponent implements OnInit {
      */
     OnKeyPress(event: any): void {
         let key = event.key;
-        if(key != 'Backspace') return;
-        this.service.getcodechar().next(key);
+        this.service.sendcodechar(key);
+        event.returnValue = false; // 禁用默认输入
     }
 }

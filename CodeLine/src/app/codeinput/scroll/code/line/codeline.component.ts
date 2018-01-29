@@ -121,6 +121,7 @@ export class CodeLineComponent implements OnInit {
         if (key == "Backspace") {
             this.OnKeyDown(this.selection, "del");
         }
+        
     }
 
     /**

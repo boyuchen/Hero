@@ -1,5 +1,6 @@
-import { Component, OnInit, ViewChild, ViewChildren, QueryList, AfterViewInit,
-     ViewContainerRef, ComponentFactoryResolver,ComponentFactory,ComponentRef 
+import {
+    Component, OnInit, ViewChild, ViewChildren, QueryList, AfterViewInit,
+    ViewContainerRef, ComponentFactoryResolver, ComponentFactory, ComponentRef
 } from '@angular/core';
 import { ClickModel } from './line/tempCode';
 import { CodeLineComponent } from './line/codeline.component';
@@ -18,7 +19,8 @@ export class CodeMirrorComponent implements OnInit {
     public cursor_line: number = 0; // 光标在具体在哪一行
     public cursor_ms; // 光标计时器
     private componentRef: ComponentRef<CodeLineComponent>; // 新建子组件对象
-    private list:Array<CodeLineComponent>;
+    private list: Array<CodeLineComponent>;
+    private interval;
 
     @ViewChildren(CodeLineComponent)
     private codelineComponentList: QueryList<CodeLineComponent>; // 子组件对象集合
@@ -36,14 +38,14 @@ export class CodeMirrorComponent implements OnInit {
         this.service.getcodechar().subscribe(item => {
             // 查找到集合中的使用中的子组件
             let codelineComponent = this.list.find(model => model.line == this.service.line);
-            
+
             switch (item) {
                 case 'Backspace':
                     codelineComponent.OnKeyDown("", "del");
                     break;
-                case '\n':
+                case 'Enter':
                     // 回车插入指定位置组件
-                    this.InsertComponent(codelineComponent.line + 1,(codelineComponent.line + 1).toString());
+                    this.InsertComponent(codelineComponent.line + 1, (codelineComponent.line + 1).toString());
                     break;
                 default:
                     codelineComponent.OnKeyDown(item, "in");
@@ -52,6 +54,8 @@ export class CodeMirrorComponent implements OnInit {
 
             console.log('CodeMirrorComponent line ' + codelineComponent.line + ' value:' + item);
         });
+
+
     }
 
     /** 
@@ -78,14 +82,15 @@ export class CodeMirrorComponent implements OnInit {
      * line：行号
      * str：内容
      */
-    InsertComponent(line:number, str:string): void {
+    InsertComponent(line: number, str: string): void {
         const factory: ComponentFactory<CodeLineComponent> = this.resolver.resolveComponentFactory(CodeLineComponent);
-        this.componentRef = this.container.createComponent(factory);
-        this.componentRef.location.nativeElement.style = "position: relative;top:0px"; // 确定新组件位置
+        this.componentRef = this.container.createComponent(factory, line - 1);
         this.componentRef.instance.line = line;
         this.componentRef.instance.codeString = str;
         this.componentRef.instance.CodeLineClick.subscribe(data => this.EditCodeMirror(data)); // 订阅事件调用
-        this.list.filter(mode => mode.line >= line).map(m => m.line = m.line + 1); // 插入改变参数
-        this.list.push(this.componentRef.instance); // 子组件添加到数组
+        if (this.list) {
+            this.list.filter(mode => mode.line >= line).map(m => m.line = m.line + 1); // 插入改变参数
+            this.list.push(this.componentRef.instance); // 子组件添加到数组
+        }
     }
 }   
