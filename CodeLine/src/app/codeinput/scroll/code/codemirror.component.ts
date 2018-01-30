@@ -20,7 +20,6 @@ export class CodeMirrorComponent implements OnInit {
     public cursor_ms; // 光标计时器
     private componentRef: ComponentRef<CodeLineComponent>; // 新建子组件对象
     private list: Array<CodeLineComponent>;
-    private interval;
 
     @ViewChildren(CodeLineComponent)
     private codelineComponentList: QueryList<CodeLineComponent>; // 子组件对象集合
@@ -45,7 +44,12 @@ export class CodeMirrorComponent implements OnInit {
                     break;
                 case 'Enter':
                     // 回车插入指定位置组件
-                    this.InsertComponent(codelineComponent.line + 1, (codelineComponent.line + 1).toString());
+                    this.InsertComponent(codelineComponent.line + 1, codelineComponent.GetStrEnd());
+                    // 剪切光标前后的字符串
+                    codelineComponent.codeString = codelineComponent.GetStrStart();
+                    break;
+                case 'Control+V':
+                    console.log("粘贴事件触发");
                     break;
                 default:
                     codelineComponent.OnKeyDown(item, "in");
@@ -85,11 +89,11 @@ export class CodeMirrorComponent implements OnInit {
     InsertComponent(line: number, str: string): void {
         const factory: ComponentFactory<CodeLineComponent> = this.resolver.resolveComponentFactory(CodeLineComponent);
         this.componentRef = this.container.createComponent(factory, line - 1);
-        this.componentRef.instance.line = line;
+        this.componentRef.instance.line = line; // 设置实例属性和事件
         this.componentRef.instance.codeString = str;
         this.componentRef.instance.CodeLineClick.subscribe(data => this.EditCodeMirror(data)); // 订阅事件调用
         if (this.list) {
-            this.list.filter(mode => mode.line >= line).map(m => m.line = m.line + 1); // 插入改变参数
+            this.list.filter(mode => mode.line >= line).map(m => m.line = m.line + 1); // 行号递增
             this.list.push(this.componentRef.instance); // 子组件添加到数组
         }
     }

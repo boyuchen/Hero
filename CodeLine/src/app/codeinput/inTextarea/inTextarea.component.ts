@@ -30,8 +30,7 @@ export class InTextareaComponent implements OnInit {
      * 键盘按下事件
      */
     OnKeyPress(event: any): void {
-        let key = event.key;
-        this.service.sendcodechar(key);
+        this.service.sendcodechar(event);
         event.returnValue = false; // 禁用默认输入
     }
 }

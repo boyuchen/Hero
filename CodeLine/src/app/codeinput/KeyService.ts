@@ -16,16 +16,16 @@ export class KeyService {
     /**
      * 过滤关键字推送数据
      */
-    public sendcodechar(keyCode:any):void{
+    public sendcodechar(e:any):void{
         // 键盘过滤
-        if (keyCode >= 48 && keyCode <= 57)
-        {
-
+        let keyCode = e.keyCode || e.which || e.charCode;
+        let ctrlKey = e.ctrlKey || e.metaKey;
+        if(ctrlKey && keyCode == "86"){
+            // 捕获粘贴操作并发送事件
+            return this.subject.next("Control+V");
         }
-        else{
-
-        }
-        return this.subject.next(keyCode);
+        let filter = ['Tab','CapsLock','Shift','Control','Meta','Alt','ArrowUp','ArrowRight','ArrowDown','ArrowLeft','Delete','Home','End','Process'];
+        return filter.indexOf(e.key) >= 0 ? void 0:this.subject.next(e.key);
     }
 
 }

@@ -155,4 +155,18 @@ export class CodeLineComponent implements OnInit {
         let cursorsWidth = this.GetCursors() + operator * sum * this._multiple // 2.获取光标位置
         this.SendEditClick(this.codeHeight, cursorsWidth); // 3.操作父组件移动光标
     }
+
+    /**
+     * 返回光标后面的字符串
+     */
+    GetStrEnd():string{
+        return this._codeString.substring(this.cursorindex);
+    }
+
+    /**
+     * 返回开始位置到光标的字符串
+     */
+    GetStrStart():string{
+        return this._codeString.substring(0,this.cursorindex);
+    }
 }

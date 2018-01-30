@@ -4,6 +4,7 @@
 pre{
     -moz-border-radius:0;
     -webkit-border-radius:0;
+    height:16px;
     border-radius:0;
     border-width:0;
     background:transparent;
