@@ -45,7 +45,7 @@ export class CodeLineComponent implements OnInit {
     /**触发父组件绑定事件
      * height：pre高度，cursorsWidth：光标位置
      */
-    private SendEditClick(height: number, cursorsWidth: number): void {
+    public SendEditClick(height: number, cursorsWidth: number): void {
         let data = new ClickModel();
         data.line = this.line;
         data.codeHeight = this.codeHeight = height; // pre元素高度和宽度
@@ -64,7 +64,8 @@ export class CodeLineComponent implements OnInit {
             var char = this._codeString[index];
             // 通过字符模型得到字符宽度差值
             let c = /[\u4e00-\u9fbb]/i.exec(char);
-            if (c) {
+            let symbol = "，。；？~！：‘“”’【】（）"; // 中文标点符号为2个字符处理
+            if (c || symbol.indexOf(char) >= 0) {
                 rel.push(2);
             }
             else {
@@ -80,7 +81,6 @@ export class CodeLineComponent implements OnInit {
      */
     SetCursors(cursorsWidth: number): void {
         let codeWidth = 0; // 字符距离左边距距离
-        let model: CharModel = new CharModel(); // 新建字符模型
         for (var index = 0; index < this._codeArray.length; index++) {
             var charlength = this._codeArray[index]; // 当前字符位数
             let endcharLeft = this._multiple * charlength; // 最后一个字符间距

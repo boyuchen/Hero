@@ -34,7 +34,7 @@ export class CodeMirrorComponent implements OnInit {
     ngAfterViewInit() {
         this.list = this.codelineComponentList.toArray(); // 初始化数组
         // 订阅键盘服务
-        this.service.getcodechar().subscribe(item => {
+        this.service.getSubject().subscribe(item => {
             // 查找到集合中的使用中的子组件
             let codelineComponent = this.list.find(model => model.line == this.service.line);
 
@@ -44,12 +44,10 @@ export class CodeMirrorComponent implements OnInit {
                     break;
                 case 'Enter':
                     // 回车插入指定位置组件
-                    this.InsertComponent(codelineComponent.line + 1, codelineComponent.GetStrEnd());
+                    let newcodeline:CodeLineComponent = this.InsertComponent(codelineComponent.line + 1, codelineComponent.GetStrEnd());
                     // 剪切光标前后的字符串
                     codelineComponent.codeString = codelineComponent.GetStrStart();
-                    break;
-                case 'Control+V':
-                    console.log("粘贴事件触发");
+                    newcodeline.SendEditClick(codelineComponent.codeHeight,0);
                     break;
                 default:
                     codelineComponent.OnKeyDown(item, "in");
@@ -85,8 +83,9 @@ export class CodeMirrorComponent implements OnInit {
      * 插入新的子组件
      * line：行号
      * str：内容
+     * return CodeLineComponent
      */
-    InsertComponent(line: number, str: string): void {
+    InsertComponent(line: number, str: string): CodeLineComponent {
         const factory: ComponentFactory<CodeLineComponent> = this.resolver.resolveComponentFactory(CodeLineComponent);
         this.componentRef = this.container.createComponent(factory, line - 1);
         this.componentRef.instance.line = line; // 设置实例属性和事件
@@ -96,5 +95,6 @@ export class CodeMirrorComponent implements OnInit {
             this.list.filter(mode => mode.line >= line).map(m => m.line = m.line + 1); // 行号递增
             this.list.push(this.componentRef.instance); // 子组件添加到数组
         }
+        return this.componentRef.instance;
     }
 }   

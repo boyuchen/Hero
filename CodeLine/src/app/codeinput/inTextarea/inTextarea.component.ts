@@ -20,9 +20,9 @@ export class InTextareaComponent implements OnInit {
         .debounceTime(500)
         .distinctUntilChanged()
         .subscribe(items => {
-            this.service.getcodechar().next(items);
+            console.log('订阅键盘事件:' + items);
+            this.service.getcodechar(items);
             this.term.setValue("");
-            console.log('subscribe:' + items);
         });
      }
 
@@ -30,7 +30,8 @@ export class InTextareaComponent implements OnInit {
      * 键盘按下事件
      */
     OnKeyPress(event: any): void {
-        this.service.sendcodechar(event);
-        event.returnValue = false; // 禁用默认输入
+        console.log('键盘按下事件');
+        this.service.sendcodechar(event);      
+        // 禁用默认输入，不能禁用需要他来完成粘贴操作
     }
 }
