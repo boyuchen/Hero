@@ -42,12 +42,14 @@ export class CodeMirrorComponent implements OnInit {
                 case 'Backspace':
                     codelineComponent.OnKeyDown("", "del");
                     break;
+                case 'Control+V':
+                    break;
                 case 'Enter':
                     // 回车插入指定位置组件
                     let newcodeline:CodeLineComponent = this.InsertComponent(codelineComponent.line + 1, codelineComponent.GetStrEnd());
                     // 剪切光标前后的字符串
                     codelineComponent.codeString = codelineComponent.GetStrStart();
-                    newcodeline.SendEditClick(codelineComponent.codeHeight,0);
+                    newcodeline.SendEditClick(codelineComponent.codeHeight,0); // 换行光标移动到头部
                     break;
                 default:
                     codelineComponent.OnKeyDown(item, "in");

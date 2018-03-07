@@ -42,7 +42,9 @@ export class CodeLineComponent implements OnInit {
         this.SendEditClick(event.target.clientHeight, event.offsetX);
     }
 
-    /**触发父组件绑定事件
+    /**
+     * 移动光标事件
+     * 附：触发父组件绑定事件
      * height：pre高度，cursorsWidth：光标位置
      */
     public SendEditClick(height: number, cursorsWidth: number): void {
