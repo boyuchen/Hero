@@ -5,7 +5,8 @@
 export class TempModel {
     // 关键字集合
     public KeyList(): any {
-        return ['class', 'interface', 'export', 'public', 'private', 'namespace', 'using', 'string', 'int'];
+        return ['class', 'interface', 'public', 'private', 'namespace', 'using', 'string', 'int','let','this',
+                'export', 'if', 'switch', 'case', 'break', 'default', 'return'];
     }
 
     public ModelProperty(val: string): string {
@@ -49,6 +50,33 @@ export class TempModel {
         return elements;
     }
     constructor() { }
+}
+
+/**
+ * keywordMode 数据模型
+ */
+export class KeywordMode {
+    private arr: string[];
+    constructor(arr: string[]) {
+        this.arr = arr;
+    }
+
+    public SetArr(arr:string[]):void{
+        this.arr = arr;
+    }
+
+    public get length(){
+        return this.arr.length;
+    }
+
+    public GetValue(index:number):string{
+        return this.arr[index];
+    }
+
+    public Slice(start?: number, end?: number):string[]{
+        return this.arr.slice(start,end);
+    }
+
 }
 
 /**

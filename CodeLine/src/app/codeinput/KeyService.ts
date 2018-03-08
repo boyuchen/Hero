@@ -58,7 +58,7 @@ export class KeyService {
     private PasteComponent(str: string): void {
         let list = str.split('\n');
         for (var index = 0; index < list.length; index++) {
-            var element = this.ReplaceData(list[index]); // 替换关键字
+            var element = list[index];
             this.subject.next(element);
             if (list.length - index > 1) {
                 this.subject.next('Enter');

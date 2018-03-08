@@ -1,5 +1,6 @@
 import { Component, OnInit, Output, Input, EventEmitter, ElementRef, ViewChild } from '@angular/core';
 import { TempModel, ClickModel, CharModel } from './tempCode';
+import { KeywordService } from '../../../KeywordService';
 
 @Component({
     selector: 'codeline',
@@ -7,8 +8,9 @@ import { TempModel, ClickModel, CharModel } from './tempCode';
     styleUrls: ['./codeline.component.css']
 })
 export class CodeLineComponent implements OnInit {
-    constructor() { }
+    constructor(private service: KeywordService) { }
 
+    private _htmlstring: any; // 页面输出字符
     private _codeString: string = '';
     private _multiple: number = 7;// 一个字符的像素，中文12像素
     private _codeArray = []; // 字符分割位置数组
@@ -22,6 +24,7 @@ export class CodeLineComponent implements OnInit {
     @Input()
     set codeString(str: string) {
         this._codeString = str;
+        this._htmlstring = this.service.AIPlay(this._codeString); // AI计算  
         // 获取DOM元素更新组件宽高
         let preElement = this.pretempDom.nativeElement;
         this.codeHeight = preElement.clientHeight;
@@ -29,6 +32,12 @@ export class CodeLineComponent implements OnInit {
         this._codeArray = this.GetCodeArray(); // 赋值数组
     } // 代码
     get codeString() { return this._codeString; }
+
+    @Input()
+    set Htmlstring(str: string) {
+        this._htmlstring = str;
+    }
+    get Htmlstring() { return this._htmlstring; }
 
     public codeWidth: number = 0; // 组件宽度
     public codeHeight: number = 0; // 组件高度
@@ -123,7 +132,7 @@ export class CodeLineComponent implements OnInit {
         if (key == "Backspace") {
             this.OnKeyDown(this.selection, "del");
         }
-        
+
     }
 
     /**
@@ -138,7 +147,7 @@ export class CodeLineComponent implements OnInit {
             index = this.cursorindex;
             strstart = this._codeString.substring(0, index);
             strend = this._codeString.substring(index);
-            this.codeString = strstart + str + strend; // 1.初始化字符串属性    
+            this.codeString = strstart + str + strend; // 1.初始化字符串属性  
             operator = 1; // 插入光标向前
         }
         else if (mode == "del") {
@@ -146,7 +155,7 @@ export class CodeLineComponent implements OnInit {
             index = this.codeString.indexOf(str);
             strstart = this._codeString.substring(0, index);
             strend = this._codeString.substring(index + str.length);
-            this.codeString = strstart + strend; // 1.初始化字符串属性    
+            this.codeString = strstart + strend; // 1.初始化字符串属性
             operator = -1; // 删除光标向后
         }
 
@@ -161,14 +170,14 @@ export class CodeLineComponent implements OnInit {
     /**
      * 返回光标后面的字符串
      */
-    GetStrEnd():string{
+    GetStrEnd(): string {
         return this._codeString.substring(this.cursorindex);
     }
 
     /**
      * 返回开始位置到光标的字符串
      */
-    GetStrStart():string{
-        return this._codeString.substring(0,this.cursorindex);
+    GetStrStart(): string {
+        return this._codeString.substring(0, this.cursorindex);
     }
 }
