@@ -13,17 +13,41 @@ export class KeywordService extends TempModel {
      * 计算字符关键字位置调用相应的函数
      */
     public AIPlay(str: string): string {
-        this.chars = str.split(' '); // 分割单词
+        this.chars = this.GetStringtoArr(str); // 分割单词
+        this.index = 0; // 初始化
         this.mode = new KeywordMode(this.chars);
-        let i = super.KeyList().indexOf(this.chars[this.index]); // 获取关键字类型
-        if(i < 11){
-            this.KeyFunction(i).ValueNameFunction();
-        }
-        else if(i == 16){ //return 关键字处理
-            this.KeyFunction(i).KeyFunction().ValueNameFunction();
-        }
+
+        this.chars.forEach(e => {
+            let i = super.KeyList().indexOf(this.chars[this.index]); // 获取关键字类型
+            if (i < 0){
+                this.ValueNameFunction();
+            }
+            else if(i < 11 && i > -1){
+                this.KeyFunction(i).ValueNameFunction();
+            }
+            else if(i == 16){
+                this.KeyFunction(i).KeyFunction().ValueNameFunction();
+            }
+        });
 
         return this.chars.join(' ');
+    }
+
+    /**
+     * 返回一个单词的数组
+     */
+    private GetStringtoArr(str:string):string[]{
+        let p = [];
+        if (str != null){
+            let arr = str.split(' ');
+            for (var index = 0; index < arr.length; index++) {
+                var element = arr[index];
+                if(element != ""){
+                    p.push(element);
+                }
+            }
+        }
+        return p;
     }
 
     /**

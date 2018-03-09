@@ -29,7 +29,6 @@ export class CodeLineComponent implements OnInit {
         let preElement = this.pretempDom.nativeElement;
         this.codeHeight = preElement.clientHeight;
         this.codeWidth = preElement.clientWidth;
-        this._codeArray = this.GetCodeArray(); // 赋值数组
     } // 代码
     get codeString() { return this._codeString; }
 
@@ -63,6 +62,7 @@ export class CodeLineComponent implements OnInit {
         this.SetCursors(cursorsWidth); // 设置光标位置
         data.customLeft = this.cursorsLeftWidth;
         data.isCustomHidden = this.selection == "" ? false : true; // 选中文字不需要输入光标
+        this._codeArray = this.GetCodeArray(); // 赋值数组，（删除计算用）
         this.CodeLineClick.emit(data);
     }
 
@@ -149,20 +149,34 @@ export class CodeLineComponent implements OnInit {
             strend = this._codeString.substring(index);
             this.codeString = strstart + str + strend; // 1.初始化字符串属性  
             operator = 1; // 插入光标向前
+            this._codeArray = this.GetCodeArray(); // 赋值数组（添加计算用）
         }
         else if (mode == "del") {
-            str = str == "" ? this.codeString[this.cursorindex - 1] : str;
-            index = this.codeString.indexOf(str);
-            strstart = this._codeString.substring(0, index);
-            strend = this._codeString.substring(index + str.length);
-            this.codeString = strstart + strend; // 1.初始化字符串属性
-            operator = -1; // 删除光标向后
+            if (str == ""){
+                // 单点删除模式
+                str =this.codeString[this.cursorindex - 1];
+                index = this.cursorindex - 1;
+            }
+            else{
+                // 选择删除模式
+                index = this.codeString.indexOf(str,this.cursorindex);
+            }
+            
+            if (index > -1) { // 没有数据终止删除
+                strstart = this._codeString.substring(0, index);
+                strend = this._codeString.substring(index + str.length);
+                this.codeString = strstart + strend; // 1.初始化字符串属性
+                operator = -1; // 删除光标向后
+            }
+            else
+                return;
         }
 
         let sum = 0; // 要移动数组集合
         for (var i = 0; i < str.length; i++) {
             sum += this._codeArray[index + i];
         }
+
         let cursorsWidth = this.GetCursors() + operator * sum * this._multiple // 2.获取光标位置
         this.SendEditClick(this.codeHeight, cursorsWidth); // 3.操作父组件移动光标
     }

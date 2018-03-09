@@ -16,7 +16,7 @@ export class TempModel {
     }
     public ModelString(val: string): string {
         // 字符串
-        let elements = '<span style="pointer-events: none" class="cm-string">' + val + '</span>';
+        let elements = '<span style="pointer-events: none;color:gray;" class="cm-string">' + val + '</span>';
         return elements;
     }
     public ModelVariable(val: string): string {
@@ -26,7 +26,7 @@ export class TempModel {
     }
     public ModelKeyword(val: string): string {
         // 关键字
-        let elements = '<span style="pointer-events: none" class="cm-keyword">' + val + '</span>';
+        let elements = '<span style="pointer-events: none;color:blue;" class="cm-keyword">' + val + '</span>';
         return elements;
     }
     public ModelDef(val: string): string {
@@ -41,7 +41,7 @@ export class TempModel {
     }
     public ModelOperator(val: string): string {
         // 操作符
-        let elements = '<span style="pointer-events: none" class="cm-">' + val + '</span>';
+        let elements = '<span style="pointer-events: none;color:pink;" class="cm-">' + val + '</span>';
         return elements;
     }
     public ModelComment(val: string): string {
@@ -56,7 +56,7 @@ export class TempModel {
  * keywordMode 数据模型
  */
 export class KeywordMode {
-    private arr: string[];
+    private arr: string[] = [];
     constructor(arr: string[]) {
         this.arr = arr;
     }
