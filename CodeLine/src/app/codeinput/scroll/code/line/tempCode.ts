@@ -5,13 +5,15 @@
 export class TempModel {
     // 关键字集合
     public KeyList(): any {
-        return ['class', 'interface', 'public', 'private', 'namespace', 'using', 'string', 'int','let','this',
-                'export', 'if', 'switch', 'case', 'break', 'default', 'return'];
+        return {
+            'class': 0, 'interface': 1, 'public': 2, 'private': 3, 'namespace': 4, 'using': 5, 'string': 6, 'int': 7, 'let': 8, 'this': 9,
+            'export': 10, 'if': 11, 'switch': 12, 'case': 13, 'break': 14, 'default': 15, 'return': 16
+        };
     }
 
     public ModelProperty(val: string): string {
         // 属性
-        let elements = '<span style="pointer-events: none" class="cm-property">' + val + '</span>';
+        let elements = '<span style="pointer-events: none;color:red;" class="cm-property">' + val + '</span>';
         return elements;
     }
     public ModelString(val: string): string {
@@ -61,20 +63,20 @@ export class KeywordMode {
         this.arr = arr;
     }
 
-    public SetArr(arr:string[]):void{
+    public SetArr(arr: string[]): void {
         this.arr = arr;
     }
 
-    public get length(){
+    public get length() {
         return this.arr.length;
     }
 
-    public GetValue(index:number):string{
+    public GetValue(index: number): string {
         return this.arr[index];
     }
 
-    public Slice(start?: number, end?: number):string[]{
-        return this.arr.slice(start,end);
+    public Slice(start?: number, end?: number): string[] {
+        return this.arr.slice(start, end);
     }
 
 }

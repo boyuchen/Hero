@@ -16,19 +16,23 @@ export class KeywordService extends TempModel {
         this.chars = this.GetStringtoArr(str); // 分割单词
         this.index = 0; // 初始化
         this.mode = new KeywordMode(this.chars);
-
-        this.chars.forEach(e => {
-            let i = super.KeyList().indexOf(this.chars[this.index]); // 获取关键字类型
-            if (i < 0){
+        let keylist = super.KeyList(); // 关键字集合          
+        
+        while (this.index < this.chars.length) {
+            let i = super.KeyList()[this.chars[this.index]]; // 获取关键字类型
+            if (i == null){
                 this.ValueNameFunction();
             }
-            else if(i < 11 && i > -1){
-                this.KeyFunction(i).ValueNameFunction();
+            else if(i < keylist.if && i > -1){
+                this.KeyFunction(i);
             }
-            else if(i == 16){
-                this.KeyFunction(i).KeyFunction().ValueNameFunction();
+            else if(i >= keylist.if && i < keylist.return){
+                this.OperatorFunction();
             }
-        });
+            else if(i == keylist.return){
+                this.KeyFunction(i);
+            }
+        }
 
         return this.chars.join(' ');
     }
@@ -48,6 +52,16 @@ export class KeywordService extends TempModel {
             }
         }
         return p;
+    }
+
+    /**
+     * 正则匹配
+     * str：单词
+     * return：返回关键字索引
+     */
+    private Findkey(str:string):any{
+        let i = super.KeyList()[this.chars[this.index]];
+        
     }
 
     /**
@@ -86,6 +100,23 @@ export class KeywordService extends TempModel {
         if (obj.length > 0) {
             let value = obj.GetValue(0); // 处理第一位数组
             this.chars[this.index] = super.ModelString(value);
+            this.index++;
+        }
+
+        this.mode.SetArr(this.chars.slice(this.index)); // 处理下一个单词
+        return this;
+    }
+
+    /**
+     * 操作符方法
+     * obj：数据模型
+     * return：从模型数据中第二位数组的模型数据
+     */
+    private OperatorFunction(): KeywordService {
+        let obj: KeywordMode = this.mode; // 处理过后的模型
+        if (obj.length > 0) {
+            let value = obj.GetValue(0); // 处理第一位数组
+            this.chars[this.index] = super.ModelOperator(value);
             this.index++;
         }
 
