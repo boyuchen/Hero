@@ -59,9 +59,12 @@ export class KeywordService extends TempModel {
      * str：单词
      * return：返回关键字索引
      */
-    private Findkey(str:string):any{
-        let i = super.KeyList()[this.chars[this.index]];
-        
+    private Findkey(str:string):void{
+        var reg = /(class)\s(\w+)/;
+        var value1 = str.replace(reg,'$1');
+        var value2 = str.replace(reg,'$2');
+        console.log('正则1：' + (str == value1?'':value1));
+        console.log('正则2：' + (str == value2?'':value2));        
     }
 
     /**
