@@ -4,6 +4,7 @@ import { KeywordService } from './KeywordService';
 
 @Injectable()
 export class KeyService {
+    constructor(private service: KeywordService){} // 服务中实例化服务。也可以在函数中 new 新建一个服务
     private subject: Subject<string> = new Subject<string>();
     public line: number = 0;
     public event: string = '';
@@ -72,8 +73,7 @@ export class KeyService {
      * return：替换模板
      */
     private ReplaceData(str: string): string {
-        let service: KeywordService = new KeywordService();
-        let ret = service.AIPlay(str);
+        let ret = this.service.AIPlay(str);
         console.log('静态化模板替换：' + ret);
         return ret;
     }
