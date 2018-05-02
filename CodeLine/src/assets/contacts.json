@@ -1,3 +1,19 @@
 {
-    "key":"(class)\\s(\\w+)"
+    "class":"(class)\\s(\\w+)",
+    "interface":"",
+    "public":"",
+    "private":"",
+    "namespace":"",
+    "using":"",
+    "string":"",
+    "int":"",
+    "let":"",
+    "this":"",
+    "export":"",
+    "if":"",
+    "switch":"",
+    "case":"",
+    "break":"",
+    "default":"",
+    "return":""
 }
