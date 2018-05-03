@@ -9,42 +9,32 @@ export class KeywordService extends TempModel {
     private chars: string[] = []; // 字符串数组
     private index: number = 0; // 当前处理到的索引
     private mode: KeywordMode; // 数据模型
-
     /**
+
      * 计算字符关键字位置调用相应的函数
      */
     public AIPlay(str: string): string {
-        // 引用本地json文件
-        this._contactservice.getContactsData().subscribe(data => {
-            if (data.key) {
-                let reg: RegExp = new RegExp(data.key);
-                var value1 = str.replace(reg, '$1');
-                var value2 = str.replace(reg, '$2');
-                console.log('正则1：' + (str == value1 ? '' : value1));
-                console.log('正则2：' + (str == value2 ? '' : value2));
-                console.log(data);
-            }
-        })
         this.chars = this.GetStringtoArr(str); // 分割单词
         this.index = 0; // 初始化
         this.mode = new KeywordMode(this.chars);
-        let keylist = super.KeyList(); // 关键字集合          
+        let keylist = super.KeyList(); // 关键字集合       
 
-        while (this.index < this.chars.length) {
-            let i = super.KeyList()[this.chars[this.index]]; // 获取关键字类型
-            if (i == null) {
-                this.ValueNameFunction();
+        // 引用本地json文件
+        this._contactservice.getContactsData().subscribe(data => {
+            while (this.index < this.chars.length) {
+                let i = super.KeyList()[this.chars[this.index]]; // 获取关键字类型
+                if (i == null) {
+                    this.ValueNameFunction();
+                }
+                else if (i < keylist.if && i > -1) {
+                    this.KeyFunction(data, str);
+                }
+                else if (i >= keylist.if && i < keylist.return) {
+                    this.OperatorFunction();
+                }
             }
-            else if (i < keylist.if && i > -1) {
-                this.KeyFunction(i);
-            }
-            else if (i >= keylist.if && i < keylist.return) {
-                this.OperatorFunction();
-            }
-            else if (i == keylist.return) {
-                this.KeyFunction(i);
-            }
-        }
+        })
+
 
         return this.chars.join(' ');
     }
@@ -69,27 +59,20 @@ export class KeywordService extends TempModel {
     /**
      * 关键字方法
      * obj：数据模型
-     * i:第一个关键字索引
      * return：从模型数据中第二位数组的模型数据
      */
-    private KeyFunction(i?: any): KeywordService {
-        let obj: KeywordMode = this.mode; // 处理过后的模型
-        if (obj.length > 0) {
-            let value = obj.GetValue(0); //处理第一位数组
-            if (i == null) { // 空值
-                i = super.KeyList().indexOf(this.chars[this.index]); // 获取关键字类型
+    private KeyFunction(data: any, str: string):void {
+        let key = this.chars[this.index];
+        if (data[key][0]) {
+            let reg: RegExp = new RegExp(data[key][0]);
+            let p = str.match(reg);
+            let value = "";
+            for (var index = 1; index <= data[key][1]; index++) {
+                var v = str.replace(reg, '$' + index);
+                value += " " + super.ModelKeyword(v);
             }
-            if (i < 11 && i > -1) {
-                this.chars[this.index] = super.ModelKeyword(value);
-                this.index++;
-            }
-            else if (i >= 11) {
-                this.chars[this.index] = super.ModelOperator(value);
-                this.index++;
-            }
+            str = str.replace(reg,value);
         }
-        this.mode.SetArr(this.chars.slice(this.index)); // 处理下一个单词
-        return this;
     }
 
     /**

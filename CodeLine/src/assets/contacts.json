@@ -1,5 +1,5 @@
 {
-    "class":"(class)\\s(\\w+)",
+    "class":["(class)\\s(\\w+)","2"],
     "interface":"",
     "public":"",
     "private":"",
