@@ -1,6 +1,6 @@
 {
     "class":{"reg":"(class)\\s(\\w+)","type":["class","value"]},
-    "interface":"",
+    "interface":{"reg":"(class)\\s(\\w+)","type":["class","value"]},
     "public":"",
     "private":"",
     "namespace":"",
