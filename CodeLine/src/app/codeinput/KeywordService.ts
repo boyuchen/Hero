@@ -4,39 +4,29 @@ import { ContactService } from './ContactService';
 
 @Injectable()
 export class KeywordService extends TempModel {
-    constructor(private _contactservice: ContactService) { super(); }
+    constructor(private _contactservice: ContactService) {
+        super();
+        // 引用本地json文件
+        this._contactservice.getContactsData().subscribe(data => this.data = data);
+    }
 
+    private data: {}; // 本地json数据
     private chars: string[] = []; // 字符串数组
     private index: number = 0; // 当前处理到的索引
     private mode: KeywordMode; // 数据模型
     /**
-
      * 计算字符关键字位置调用相应的函数
      */
-    public AIPlay(str: string): string {
+    public AIPlay(str: string) {
         this.chars = this.GetStringtoArr(str); // 分割单词
         this.index = 0; // 初始化
-        this.mode = new KeywordMode(this.chars);
-        let keylist = super.KeyList(); // 关键字集合       
+        //this.mode = new KeywordMode(this.chars);   
 
-        // 引用本地json文件
-        this._contactservice.getContactsData().subscribe(data => {
-            while (this.index < this.chars.length) {
-                let i = super.KeyList()[this.chars[this.index]]; // 获取关键字类型
-                if (i == null) {
-                    this.ValueNameFunction();
-                }
-                else if (i < keylist.if && i > -1) {
-                    this.KeyFunction(data, str);
-                }
-                else if (i >= keylist.if && i < keylist.return) {
-                    this.OperatorFunction();
-                }
-            }
-        })
+        while (this.index < this.chars.length) {
+            this.KeyFunction(this.data, str);
+        }
 
-
-        return this.chars.join(' ');
+        return this.chars.join(" ");
     }
 
     /**
@@ -61,18 +51,35 @@ export class KeywordService extends TempModel {
      * obj：数据模型
      * return：从模型数据中第二位数组的模型数据
      */
-    private KeyFunction(data: any, str: string):void {
-        let key = this.chars[this.index];
-        if (data[key][0]) {
-            let reg: RegExp = new RegExp(data[key][0]);
-            let p = str.match(reg);
-            let value = "";
-            for (var index = 1; index <= data[key][1]; index++) {
-                var v = str.replace(reg, '$' + index);
-                value += " " + super.ModelKeyword(v);
+    private KeyFunction(data: any, str: string): void {
+        let key = this.chars[this.index]; // 当前在处理的单词
+        let keylist = super.KeyList(); // 关键字集合 
+        let obj = data[key];
+        // 获取正则表达式
+        if (obj && obj.reg) {
+            let reg: RegExp = new RegExp(obj.reg); // 加载正则表达式
+            // 遍历正则捕获的字符串
+            for (var index = 1; index <= obj.type.length; index++) {
+                var value = ""; // 需要替换的字符串
+                let match = str.match(reg);
+                var v = match[index]; // 捕获到的字符串
+                var i = this.chars.indexOf(v); // 捕获字符串在字典中的位置
+                let x = super.KeyList()[obj.type[index-1]]; // 捕获字符串的类型
+                if (x == null) {
+                    value = super.ModelString(v); // 替换为普通字符串
+                }
+                else if (x < keylist.if && x > -1) {
+                    value = super.ModelKeyword(v); // 替换为关键字
+                }
+                else if (x >= keylist.if && x < keylist.return) {
+                    // 替换为操作符
+                }
+                this.chars[i] = value; // 替换字典中的单词
+                this.index++; // 准备替换下一个字典中的单词
             }
-            str = str.replace(reg,value);
         }
+        else
+            this.index++;
     }
 
     /**

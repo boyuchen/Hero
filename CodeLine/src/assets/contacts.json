@@ -1,5 +1,5 @@
 {
-    "class":["(class)\\s(\\w+)","2"],
+    "class":{"reg":"(class)\\s(\\w+)","type":["class","value"]},
     "interface":"",
     "public":"",
     "private":"",
