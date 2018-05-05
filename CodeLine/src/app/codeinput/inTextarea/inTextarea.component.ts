@@ -18,7 +18,6 @@ export class InTextareaComponent implements OnInit {
         // 订阅键盘事件
         this.term.valueChanges
         .debounceTime(500)
-        .distinctUntilChanged()
         .subscribe(items => {
             console.log('订阅键盘事件:' + items);
             this.service.getcodechar(items);

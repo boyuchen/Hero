@@ -66,15 +66,4 @@ export class KeyService {
             }
         }
     }
-
-    /**
-     * 静态化模板替换
-     * str：输入字符串
-     * return：替换模板
-     */
-    private ReplaceData(str: string): string {
-        let ret = this.service.AIPlay(str);
-        console.log('静态化模板替换：' + ret);
-        return ret;
-    }
 }

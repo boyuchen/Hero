@@ -23,7 +23,8 @@ export class KeywordService extends TempModel {
         //this.mode = new KeywordMode(this.chars);   
 
         while (this.index < this.chars.length) {
-            this.KeyFunction(this.data, str);
+            let s = this.chars.slice(this.index).join(' ');
+            this.KeyFunction(this.data, s);
         }
 
         return this.chars.join(" ");
@@ -62,19 +63,20 @@ export class KeywordService extends TempModel {
             for (var index = 1; index <= obj.type.length; index++) {
                 var value = ""; // 需要替换的字符串
                 let match = str.match(reg);
-                var v = match[index]; // 捕获到的字符串
-                var i = this.chars.indexOf(v); // 捕获字符串在字典中的位置
-                let x = super.KeyList()[obj.type[index-1]]; // 捕获字符串的类型
-                if (x == null) {
-                    value = super.ModelString(v); // 替换为普通字符串
+                if (match != null) { // 匹配不能为空
+                    var v = match[index]; // 捕获到的字符串
+                    let x = super.KeyList()[obj.type[index - 1]]; // 捕获字符串的类型
+                    if (x == null) {
+                        value = super.ModelString(v); // 替换为普通字符串
+                    }
+                    else if (x < keylist.if && x > -1) {
+                        value = super.ModelKeyword(v); // 替换为关键字
+                    }
+                    else if (x >= keylist.if && x < keylist.return) {
+                        // 替换为操作符
+                    }
+                    this.chars[this.index] = value; // 替换字典中的单词
                 }
-                else if (x < keylist.if && x > -1) {
-                    value = super.ModelKeyword(v); // 替换为关键字
-                }
-                else if (x >= keylist.if && x < keylist.return) {
-                    // 替换为操作符
-                }
-                this.chars[i] = value; // 替换字典中的单词
                 this.index++; // 准备替换下一个字典中的单词
             }
         }
