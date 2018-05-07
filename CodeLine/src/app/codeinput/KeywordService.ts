@@ -74,6 +74,7 @@ export class KeywordService extends TempModel {
                     }
                     else if (x >= keylist.if && x < keylist.return) {
                         // 替换为操作符
+                        value = super.ModelOperator(v);
                     }
                     this.chars[this.index] = value; // 替换字典中的单词
                 }

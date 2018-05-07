@@ -1,6 +1,6 @@
 {
     "class":{"reg":"(class)\\s(\\w+)","type":["class","value"]},
-    "interface":{"reg":"(class)\\s(\\w+)","type":["class","value"]},
+    "interface":{"reg":"(interface)\\s(\\w+)","type":["interface","value"]},
     "public":"",
     "private":"",
     "namespace":"",
@@ -10,7 +10,7 @@
     "let":"",
     "this":"",
     "export":"",
-    "if":"",
+    "if":{"reg":"(if)","type":["if"]},
     "switch":"",
     "case":"",
     "break":"",
